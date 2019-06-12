@@ -20,9 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.Position;
 import javax.swing.text.StyledDocument;
-
-public class SimpleNotePad extends JFrame implements ActionListener
-{
+public class SimpleNotePad extends JFrame implements ActionListener{
     JMenuBar mb = new JMenuBar();
     JMenu fm = new JMenu("File");
     JMenu em = new JMenu("Edit");
@@ -33,9 +31,7 @@ public class SimpleNotePad extends JFrame implements ActionListener
     JMenuItem u = new JMenuItem("Undo");
     JMenuItem c = new JMenuItem("Copy");
     JMenuItem p = new JMenuItem("Paste");
-
-    public SimpleNotePad()
-    {
+    public SimpleNotePad() {
         setTitle("A Simple Notepad Tool");
         fm.add(nf);
         fm.addSeparator();
@@ -67,48 +63,33 @@ public class SimpleNotePad extends JFrame implements ActionListener
         setVisible(true);
         pack();
     }
-
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         SimpleNotePad app = new SimpleNotePad();
     }
-
     @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        if(e.getActionCommand().equals("new"))
-        {
+    public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand().equals("new")) {
             d.setText("");
-        }
-        else if(e.getActionCommand().equals("save"))
-        {
+        }else if(e.getActionCommand().equals("save")) {
             File fileToWrite = null;
             JFileChooser fc = new JFileChooser();
             int returnVal = fc.showSaveDialog(null);
             if (returnVal == JFileChooser.APPROVE_OPTION)
                 fileToWrite = fc.getSelectedFile();
-            try
-            {
+            try {
                 PrintWriter out = new PrintWriter(new FileWriter(fileToWrite));
                 out.println(d.getText());
                 JOptionPane.showMessageDialog(null, "File is saved successfully...");
                 out.close();
+            } catch (IOException ex) {
             }
-            catch (IOException ex)
-            {
-            }
-        }
-        else if(e.getActionCommand().equals("print"))
-        {
-            try
-            {
+        }else if(e.getActionCommand().equals("print")) {
+            try{
                 PrinterJob pjob = PrinterJob.getPrinterJob();
                 pjob.setJobName("Sample Command Pattern");
                 pjob.setCopies(1);
-                pjob.setPrintable(new Printable()
-                {
-                    public int print(Graphics pg, PageFormat pf, int pageNum)
-                    {
+                pjob.setPrintable(new Printable() {
+                    public int print(Graphics pg, PageFormat pf, int pageNum) {
                         if (pageNum>0)
                             return Printable.NO_SUCH_PAGE;
                         pg.drawString(d.getText(), 500, 500);
@@ -120,28 +101,20 @@ public class SimpleNotePad extends JFrame implements ActionListener
                 if (pjob.printDialog() == false)
                     return;
                 pjob.print();
-            }
-            catch (PrinterException pe)
-            {
+            } catch (PrinterException pe) {
                 JOptionPane.showMessageDialog(null,
                         "Printer error" + pe, "Printing error",
                         JOptionPane.ERROR_MESSAGE);
             }
-        }
-        else if(e.getActionCommand().equals("copy"))
-        {
+        }else if(e.getActionCommand().equals("copy")) {
             d.copy();
-        }
-        else if(e.getActionCommand().equals("paste"))
-        {
+        }else if(e.getActionCommand().equals("paste")) {
             StyledDocument doc = d.getStyledDocument();
             Position position = doc.getEndPosition();
             System.out.println("offset"+position.getOffset());
             d.paste();
-        }
-        else if(e.getActionCommand().equals("undo"))
-        {
-            //TODO: implement undo operation
+        }else if(e.getActionCommand().equals("undo")) {
+//TODO: implement undo operation
         }
     }
 }
